@@ -9,7 +9,7 @@ export FRONTEND_IMAGE_NAME="ads-chat-frontend"
 
 
 # Create the network if we don't have it yet
-docker network inspect chat-network >/dev/null 2>&1 || docker network create chat-network
+docker network inspect chat-network-compose >/dev/null 2>&1 || docker network create chat-network-compose
 
 
 if [[ "${DEV}" == "1" ]]; then
@@ -20,13 +20,12 @@ if [[ "${DEV}" == "1" ]]; then
 
     if [[ "${PUSH_IMAGE}" == "1" ]]; then
         echo "Pushing image to Docker Hub"
-        # docker push tanner3030/data-label-cli
     fi
 else
     echo "Pulling image from Docker Hub"
-    # docker pull tanner3030/data-label-cli
 fi
 
  
 # Run All Containers
-docker compose run --rm --service-ports chat
+# docker compose run --rm --service-ports ads-chat-api-service
+docker compose up
