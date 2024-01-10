@@ -1,7 +1,7 @@
-version: "3.11"
+version: "3.8"
 networks:
     default:
-        name: chat-network
+        name: chat-network-compose
         external: true
 services:
     ads-chat-api-service:
@@ -13,9 +13,14 @@ services:
             - ../chat_api:/app
         environment:
             DEV: "1"
+            TOKENIZERS_PARALLELISM: "false"
+            PINECONE_ENV: "gcp-starter"
         secrets:
             - open_ai_key
             - ads_key
+            - pinecone_key
+        depends_on:
+            - ads-chat-frontend
     ads-chat-frontend:
         image: ads-chat-frontend
         container_name: ads-chat-frontend
@@ -25,11 +30,11 @@ services:
             - ../chat_streamlit:/app
         environment:
             API_SERVICE_URL: "http://ads-chat-api-service:9000"
-        depends_on:
-            - ads-chat-api-service
 
 secrets:
     open_ai_key:
         file: ../secrets/open_ai_key.txt
     ads_key:
         file: ../secrets/ads_key.txt
+    pinecone_key:
+        file: ../secrets/pinecone_key.txt
