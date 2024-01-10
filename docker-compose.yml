@@ -19,17 +19,17 @@ services:
             - open_ai_key
             - ads_key
             - pinecone_key
-        depends_on:
-            - ads-chat-frontend
     ads-chat-frontend:
         image: ads-chat-frontend
         container_name: ads-chat-frontend
         ports:
-            - 8501:8501
+            - 80:8501
         volumes:
             - ../chat_streamlit:/app
         environment:
             API_SERVICE_URL: "http://ads-chat-api-service:9000"
+        depends_on:
+            - ads-chat-api-service
 
 secrets:
     open_ai_key:
